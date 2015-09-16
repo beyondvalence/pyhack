@@ -5,12 +5,14 @@
 
 library(ggplot2)
 
-setwd("~/Documents/R/hackers/data/01-Introduction/data/ufo")
+setwd("~/R/hackers/data/01-Introduction/data/ufo")
+directory <- "~/R/hackers/data/01-Introduction/data/ufo"
 help.search("directory") # search help
 list.files() # files in cwd
 
 # 1.1 read in tsv ####
-ufo <- read.delim("ufo_awesome.tsv", sep="\t",
+filename <- paste(directory, "ufo_awesome.tsv", sep="/")
+ufo <- read.delim(filename, sep="\t",
                   header=FALSE, stringsAsFactors=FALSE, na.strings="")
 
 # 1.2 first 6 rows ####
