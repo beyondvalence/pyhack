@@ -5,13 +5,13 @@
 
 library(ggplot2)
 
-setwd("~/R/hackers/data/01-Introduction/data/ufo")
-directory <- "~/R/hackers/data/01-Introduction/data/ufo"
-help.search("directory") # search help
+# directory <- "~/R/hackers/data/01-Introduction/data/ufo"
+# help.search("directory") # search help
 list.files() # files in cwd
-
+getwd() # returns working directory
+loc <- paste0(getwd(), "/01-Introduction/data/ufo")
 # 1.1 read in tsv ####
-filename <- paste(directory, "ufo_awesome.tsv", sep="/")
+filename <- paste0(loc, "/ufo_awesome.tsv")
 ufo <- read.delim(filename, sep="\t",
                   header=FALSE, stringsAsFactors=FALSE, na.strings="")
 
