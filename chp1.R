@@ -79,12 +79,13 @@ tail(ufo.us$USState)
 library(scales)
 library(png)
 library(plyr)
+library(ggplot2)
 summary(ufo.us$DateOccurred) # earliest occurred in 1400!
 # use ggplot
 quick.hist <- ggplot(ufo.us, aes(x=DateOccurred)) + geom_histogram() + 
   scale_x_date(breaks="5 years", labels=date_format("%Y"))
 print(quick.hist)
-ggsave(plot=quick.hist, file="quick_hist.png", height=6, width=8)
+ggsave(plot=quick.hist, file=paste(loc,"quick_hist.png", sep="/"), height=6, width=8)
 # subset ufo.us to recent 2 decades
 ufo.us <- subset(ufo.us, DateOccurred>=as.Date("1990-01-01"))
 # organize ufo by year-month state aggregates
@@ -108,7 +109,7 @@ names(all.sightings) <- c("State", "YearMonth", "Sightings")
 all.sightings$Sightings[is.na(all.sightings$Sightings)] <- 0
 all.sightings$YearMonth <- as.Date(rep(date.range, length(us.states)))
 all.sightings$State <- as.factor(toupper(all.sightings$State))
-save(all.sightings, file="allsightings.RData")
+save(all.sightings, file=paste(loc,"allsightings.RData", sep=))
 
 # 1.6 analyzing data visually ####
 # use ggplot and build layers
@@ -126,11 +127,12 @@ state.plot <- ggplot(all.sightings, aes(x=YearMonth, y=Sightings))+
   xlab("Time")+
   ylab("Number of Sightings")+
   labs(title="Number of UFO Sightings by Month-Year and U.S. State (1990-2010)")
-ggsave(plot=state.plot, file="stateplot.pdf", width=14, height=9)
+ggsave(plot=state.plot, file=paste(loc,"stateplot.pdf",sep="/"), width=14, height=9)
 
 # 2.1 Numeric Summaries ####
 setwd("~/Documents/R/hackers/data/02-Exploration/data")
-heights.weights <- read.csv("01_heights_weights_genders.csv",
+loc2 <- paste0(getwd(), "/02-Exploration/data")
+heights.weights <- read.csv(paste(loc2,"01_heights_weights_genders.csv",sep="/"),
                             header=TRUE, stringsAsFactors=FALSE,
                             sep=",")
 heights <- with(heights.weights, Height)
@@ -165,7 +167,7 @@ ggplot(heights.weights, aes(x=Height))+
 
 # to prevent over-under smoothing, use kernel density est.
 ggplot(heights.weights, aes(x=Height))+
-  geom_density()
+  geom_density(color="darkgreen")
 # peak is flat, use qualitative variable
 ggplot(heights.weights, aes(x=Height, fill=Gender))+
   geom_density()
