@@ -219,3 +219,7 @@ ggplot(heights.weights, aes(x=Weight, y=Height, color=Gender)) +
               slope= -coef(logit.model)[3]/coef(logit.model)[2],
               geom='abline',
               color='black')
+# to get intercept and slope solve as
+# 0 = coef[1] + coef[2]Height + coef[3]Weight
+# with Height as Y and Weight as X
+# slope is the coefficient of weight
