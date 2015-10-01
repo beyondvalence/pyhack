@@ -10,6 +10,7 @@ library(ggplot2)
 list.files() # files in cwd
 getwd() # returns working directory
 loc <- paste0(getwd(), "/01-Introduction/data/ufo")
+loc
 # 1.1 read in tsv ####
 filename <- paste0(loc, "/ufo_awesome.tsv")
 ufo <- read.delim(filename, sep="\t",
@@ -113,7 +114,7 @@ save(all.sightings, file=paste(loc,"allsightings.RData", sep=))
 
 # 1.6 analyzing data visually ####
 # use ggplot and build layers
-load("allsightings.RData")
+load(paste(loc,"/allsightings.RData",sep="/"))
 library(ggplot2)
 library(png)
 library(scales)
@@ -127,6 +128,7 @@ state.plot <- ggplot(all.sightings, aes(x=YearMonth, y=Sightings))+
   xlab("Time")+
   ylab("Number of Sightings")+
   labs(title="Number of UFO Sightings by Month-Year and U.S. State (1990-2010)")
+print(state.plot)
 ggsave(plot=state.plot, file=paste(loc,"stateplot.pdf",sep="/"), width=14, height=9)
 
 # 2.1 Numeric Summaries ####
@@ -177,3 +179,26 @@ ggplot(heights.weights, aes(x=Weight, fill=Gender))+
 ggplot(heights.weights, aes(x=Weight, fill=Gender))+
   geom_density()+
   facet_grid(Gender~ .)
+
+# 2.3.1 Tails of Distributions ####
+set.seed(1)
+normal.values <- rnorm(250,0,1)
+cauchy.values <- rcauchy(250,0,1)
+# cauchy has heavier tails than the normal distribution
+# cauchy has 90% values within 3 deviations away from the mean, 
+# whereas a normal distribution has 99% of its values 3 deviations away
+range(normal.values)
+range(cauchy.values)
+ggplot(data.frame(X=normal.values), aes(x=X)) + geom_density()
+ggplot(data.frame(X=cauchy.values), aes(x=X)) + geom_density()
+# gamma distribution, produces only positive values
+gamma.values <- rgamma(100000, 2,0.001)
+ggplot(data.frame(X=gamma.values), aes(x=X)) + geom_density()
+
+# 2.4 Visualizing the Relationships Between Columns ####
+loc2 <- paste0(getwd(), "/02-Exploration/data")
+heights.weights <- read.csv(paste(loc2,"01_heights_weights_genders.csv",sep="/"),
+                            header=TRUE, stringsAsFactors=FALSE,
+                            sep=",")
+# two types of problems: regression, and classification
+ggplot(heights.weights, aes(x=Height, y=Weight)) + geom_point()
