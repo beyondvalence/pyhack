@@ -200,5 +200,22 @@ loc2 <- paste0(getwd(), "/02-Exploration/data")
 heights.weights <- read.csv(paste(loc2,"01_heights_weights_genders.csv",sep="/"),
                             header=TRUE, stringsAsFactors=FALSE,
                             sep=",")
-# two types of problems: regression, and classification
+# two types of problems: regression
+# predicts values of a column given other columns
 ggplot(heights.weights, aes(x=Height, y=Weight)) + geom_point()
+ggplot(heights.weights, aes(x=Height, y=Weight)) + geom_point() +geom_smooth()
+# and classification
+# of gender in the heights.weights dataset
+# categorizes a predictor
+ggplot(heights.weights, aes(x=Height,y=Weight, color=Gender)) + geom_point()
+
+# preview of classication:
+heights.weights <- transform(heights.weights, Male=ifelse(Gender=='Male', 1, 0))
+logit.model <- glm(Male ~ Height + Weight, data=heights.weights, 
+                   family=binomial(link='logit'))
+ggplot(heights.weights, aes(x=Weight, y=Height, color=Gender)) + 
+  geom_point() +
+  stat_abline(intercept= -coef(logit.model)[1]/coef(logit.model)[2],
+              slope= -coef(logit.model)[3]/coef(logit.model)[2],
+              geom='abline',
+              color='black')
