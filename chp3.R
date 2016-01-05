@@ -2,8 +2,8 @@
 # Thursday October 1, 2015
 # Chapter 3. Classification: spam filtering
 
-getwd()
-(loc <- paste0(getwd(), "/03-Classification/data"))
+(loc <- paste0(getwd(), "/03-Classification"))
+setwd(loc)
 
 # 3.1 Binary classification ####
 # this or that, spam or ham
@@ -17,12 +17,12 @@ library(tm)
 library(ggplot2)
 
 # set path variables to easy ham, hard ham, spam folders
-spam.path <- '/data/spam'
-spam2.path <- '/data/spam_2'
-easyham.path <- '/data/easy_ham'
-easyham2.path <- '/data/easy_ham_2'
-hardham.path <- '/data/hard_ham'
-hardham2.path <- '/data/hard_ham_2'
+spam.path <- 'data/spam/'
+spam2.path <- 'data/spam_2/'
+easyham.path <- 'data/easy_ham/'
+easyham2.path <- 'data/easy_ham_2/'
+hardham.path <- 'data/hard_ham'
+hardham2.path <- 'data/hard_ham_2'
 
 # write function that opens email file
 # finds first line break
@@ -40,3 +40,7 @@ get.msg <- function(path) {
   return(paste(msg, collapse="\n"))
 }
 
+# create vector containing all messages
+spam.docs <- dir(spam.path)
+spam.docs <- spam.docs[which(spam.docs!="cmds")]
+all.spam <- sapply(spam.docs, function(p) get.msg(paste(spam.path,p,sep="")))
