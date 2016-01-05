@@ -21,8 +21,8 @@ spam.path <- 'data/spam/'
 spam2.path <- 'data/spam_2/'
 easyham.path <- 'data/easy_ham/'
 easyham2.path <- 'data/easy_ham_2/'
-hardham.path <- 'data/hard_ham'
-hardham2.path <- 'data/hard_ham_2'
+hardham.path <- 'data/hard_ham/'
+hardham2.path <- 'data/hard_ham_2/'
 
 # write function that opens email file
 # finds first line break
@@ -32,7 +32,7 @@ get.msg <- function(path) {
   con <- file(path, open="rt", encoding="latin1")
   text <- readLines(con)
   # The message always begins after the first full line break
-  # finds the line number where the line break occurs
+  # so this fn finds the line number where the line break occurs
   # and starts the capture on the next line to the end
   # to return the text message
   msg <- text[seq(which(text=="")[1]+1, length(text),1)]
