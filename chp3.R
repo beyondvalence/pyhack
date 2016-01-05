@@ -3,8 +3,7 @@
 # Chapter 3. Classification: spam filtering
 
 getwd()
-loc <- paste0(getwd(), "/03-Classification/data")
-loc
+(loc <- paste0(getwd(), "/03-Classification/data"))
 
 # 3.1 Binary classification ####
 # this or that, spam or ham
