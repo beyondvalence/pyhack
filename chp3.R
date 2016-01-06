@@ -2,7 +2,8 @@
 # Thursday October 1, 2015
 # Chapter 3. Classification: spam filtering
 
-(loc <- paste0(getwd(), "/03-Classification"))
+wd <- getwd()
+(loc <- paste0(wd, "/Documents/R/hackers/data/03-Classification"))
 setwd(loc)
 
 # 3.1 Binary classification ####
