@@ -36,7 +36,7 @@ get.msg <- function(path) {
   # so this fn finds the line number where the line break occurs
   # and starts the capture on the next line to the end
   # to return the text message
-  msg <- text[seq(which(text=="")[1]+1, length(text),1)]
+  msg <- text[seq(which(text=="")[1]+1,length(text),by=1)]
   close(con)
   return(paste(msg, collapse="\n"))
 }
@@ -44,4 +44,5 @@ get.msg <- function(path) {
 # create vector containing all messages
 spam.docs <- dir(spam.path)
 spam.docs <- spam.docs[which(spam.docs!="cmds")]
+#spam.docs <- spam.docs[1:10]
 all.spam <- sapply(spam.docs, function(p) get.msg(paste(spam.path,p,sep="")))
