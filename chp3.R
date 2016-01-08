@@ -78,3 +78,4 @@ spam.density <- spam.df$freq/sum(spam.df$freq)
 spam.df <- transform(spam.df, 
                      density=spam.density, 
                      occurrence=spam.occurrence)
+save(spam.df, file="spam.df.rdata")
