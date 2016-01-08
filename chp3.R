@@ -2,8 +2,8 @@
 # Thursday October 1, 2015
 # Chapter 3. Classification: spam filtering
 
-wd <- getwd()
-(loc <- paste0(wd, "/Documents/R/hackers/data/03-Classification"))
+wd <- "C:/Users/wayne/Documents/R/hackers/data"
+(loc <- paste0(wd, "/03-Classification"))
 setwd(loc)
 
 # 3.1 Binary classification ####
@@ -30,19 +30,23 @@ hardham2.path <- 'data/hard_ham_2/'
 # and returns text as character vector
 
 get.msg <- function(path) {
-  con <- file(path, open="rt", encoding="latin1")
+  cat("create connection\n")
+  con <- file(path, open="rt") # need to remove encoding specification
+  cat("\topen file connection\n")
   text <- readLines(con)
   # The message always begins after the first full line break
   # so this fn finds the line number where the line break occurs
   # and starts the capture on the next line to the end
-  # to return the text message
+  # for each line with seq()
+  # and returns resulting text message
+  cat("\t\ttext separation\n")
   msg <- text[seq(which(text=="")[1]+1,length(text),by=1)]
+  cat("\t\t\tclosing file connection\n")
   close(con)
   return(paste(msg, collapse="\n"))
 }
 
 # create vector containing all messages
 spam.docs <- dir(spam.path)
-spam.docs <- spam.docs[which(spam.docs!="cmds")]
-#spam.docs <- spam.docs[1:10]
+spam.docs <- spam.docs[which(spam.docs!="cmds" & spam.docs!="00136.faa39d8e816c70f23b4bb8758d8a74f0")]
 all.spam <- sapply(spam.docs, function(p) get.msg(paste(spam.path,p,sep="")))
