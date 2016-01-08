@@ -25,7 +25,7 @@ easyham2.path <- 'data/easy_ham_2/'
 hardham.path <- 'data/hard_ham/'
 hardham2.path <- 'data/hard_ham_2/'
 
-# write function that opens email file
+# 3.2.1 write function that opens email file ####
 # finds first line break
 # and returns text as character vector
 
@@ -46,7 +46,35 @@ get.msg <- function(path) {
   return(paste(msg, collapse="\n"))
 }
 
-# create vector containing all messages
+# 3.2.2 create vector containing all messages ####
 spam.docs <- dir(spam.path)
 spam.docs <- spam.docs[which(spam.docs!="cmds" & spam.docs!="00136.faa39d8e816c70f23b4bb8758d8a74f0")]
 all.spam <- sapply(spam.docs, function(p) get.msg(paste(spam.path,p,sep="")))
+
+# 3.2.3 create TDM ####
+get.tdm <- function(doc.vec) {
+  # construct corpus using vector of spam emails
+  doc.corpus <- Corpus(VectorSource(doc.vec))
+  # specify options to clean the text
+  control <- list(stopwords=TRUE, removePunctuation=TRUE, 
+                  removeNumbers=TRUE, minDocFreq=2)
+  doc.dtm <- TermDocumentMatrix(doc.corpus, control)
+  return(doc.dtm)
+}
+spam.tdm <- get.tdm(all.spam)
+
+# 3.2.4 build training data set ####
+spam.matrix <- as.matrix(spam.tdm)
+spam.counts <- rowSums(spam.matrix)
+spam.df <- data.frame(cbind(names(spam.counts),
+                            as.numeric(spam.counts)),
+                            stringsAsFactors=FALSE)
+names(spam.df) <- c("term", "freq")
+spam.df$freq <- as.numeric(spam.df$freq)
+spam.occurrence <- sapply(1:nrow(spam.matrix),
+                          function(i) 
+                            {length(which(spam.matrix[i,]>0))/ncol(spam.matrix)})
+spam.density <- spam.df$freq/sum(spam.df$freq)
+spam.df <- transform(spam.df, 
+                     density=spam.density, 
+                     occurrence=spam.occurrence)
